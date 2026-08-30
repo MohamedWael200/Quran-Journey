@@ -4086,6 +4086,8 @@ p {
   border-radius: var(--radius-lg);
 
   box-shadow: var(--shadow-md);
+
+  cursor: pointer;
 }
 
 .tasbeeh-selected-label {

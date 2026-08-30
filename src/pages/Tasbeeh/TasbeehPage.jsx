@@ -114,7 +114,7 @@ function TasbeehPage() {
 
             {/* Main Counter */}
 
-            <section className="tasbeeh-counter-card">
+            <section className="tasbeeh-counter-card" onClick={handleTasbeeh}>
 
                 <p className="tasbeeh-selected-label">
                     الذكر الحالي
@@ -136,7 +136,7 @@ function TasbeehPage() {
 
                 <button
                     className="tasbeeh-main-btn"
-                    onClick={handleTasbeeh}
+                    // onClick={handleTasbeeh}
                 >
                     سبح
                 </button>
