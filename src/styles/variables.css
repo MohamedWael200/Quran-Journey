@@ -1,0 +1,84 @@
+:root {
+    /* Colors */
+    --primary: #1f7a5c;
+    --primary-dark: #166149;
+    --primary-light: #e8f5f0;
+
+    --accent: #d4a853;
+    --accent-light: #fdf6e7;
+
+    /* Backgrounds */
+    --background: #f6f8f7;
+    --surface: #ffffff;
+    --surface-hover: #f1f5f3;
+
+    /* Text */
+    --text-primary: #1d2925;
+    --text-secondary: #68756f;
+    --text-muted: #98a29e;
+
+    /* Borders */
+    --border: #e3e9e6;
+
+    /* Status */
+    --success: #2e9b6f;
+    --danger: #d9534f;
+    --warning: #e0a63a;
+
+    /* Shadow */
+    --shadow-sm:
+            0 2px 8px rgba(0, 0, 0, 0.04);
+
+    --shadow-md:
+            0 8px 24px rgba(0, 0, 0, 0.08);
+
+    --shadow-lg:
+            0 16px 40px rgba(0, 0, 0, 0.12);
+
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 30px;
+
+    /* Layout */
+    --container-width: 1200px;
+
+    /* Transition */
+    --transition: 0.25s ease;
+}
+
+
+/* 🌙 Dark Mode */
+
+.app.dark {
+    --primary: #39a77b;
+    --primary-dark: #2c8c66;
+    --primary-light: #173b30;
+
+    --accent: #e0b75d;
+    --accent-light: #332b18;
+
+    --background: #111816;
+    --surface: #19231f;
+    --surface-hover: #22302a;
+
+    --text-primary: #edf5f1;
+    --text-secondary: #b2c0ba;
+    --text-muted: #7f9089;
+
+    --border: #2b3933;
+
+    --success: #4ec58f;
+    --danger: #ef6b66;
+    --warning: #e6b850;
+
+    --shadow-sm:
+            0 2px 8px rgba(0, 0, 0, 0.2);
+
+    --shadow-md:
+            0 8px 24px rgba(0, 0, 0, 0.3);
+
+    --shadow-lg:
+            0 16px 40px rgba(0, 0, 0, 0.4);
+}
