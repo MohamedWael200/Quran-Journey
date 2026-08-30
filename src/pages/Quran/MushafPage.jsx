@@ -200,61 +200,74 @@ function MushafPage() {
 
                     <div className="mushaf-content">
 
-                        {currentPage.ayahs.map(
-                            (ayah, index) => {
-                                const isFirstAyah =
-                                    ayah.numberInSurah === 1;
+                        {currentPage.ayahs.map((ayah, index) => {
 
-                                return (
-                                    <span
-                                        key={ayah.number}
-                                        className="mushaf-ayah"
-                                    >
-                                        {/* عنوان السورة */}
+                            const previousAyah =
+                                currentPage.ayahs[index - 1];
 
-                                        {isFirstAyah && (
-                                            <span className="surah-title">
-                                                سورة{" "}
-                                                {
-                                                    ayah.surah
-                                                        .name
-                                                }
-                                            </span>
-                                        )}
+                            // هل دي بداية سورة جديدة في الصفحة؟
+                            const isNewSurah =
+                                index === 0 ||
+                                previousAyah?.surah.number !==
+                                ayah.surah.number;
+
+                            // سورة التوبة بدون بسملة
+                            const showBismillah =
+                                isNewSurah &&
+                                ayah.surah.number !== 9;
+
+                            return (
+                                <span
+                                    key={ayah.number}
+                                    className="mushaf-ayah"
+                                >
+
+                {/* اسم السورة */}
+
+                                    {isNewSurah && (
+                                        <span className="surah-header">
+
+                        <span className="surah-decoration">
+                            ❖
+                        </span>
+
+                        <span className="surah-title">
+                            سورة {ayah.surah.name}
+                        </span>
+
+                        <span className="surah-decoration">
+                            ❖
+                        </span>
+
+                    </span>
+                                    )}
 
 
-                                        {/* نص الآية */}
+                                    {/* البسملة */}
 
-                                        <span className="ayah-text">
-                                            {ayah.text}
-                                        </span>
-
-
-                                        {/* رقم الآية */}
-
-                                        <span className="ayah-marker">
-                                            {
-                                                ayah.numberInSurah
-                                            }
-                                        </span>
+                                    {showBismillah && (
+                                        <span className="bismillah">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </span>
+                                    )}
 
 
-                                        {/* فاصل بسيط */}
+                                    {/* نص الآية */}
 
-                                        {index <
-                                            currentPage
-                                                .ayahs
-                                                .length -
-                                            1 && (
-                                                <span className="ayah-separator">
-                                                ۝
-                                            </span>
-                                            )}
+                                    <span className="ayah-text">
+                    {ayah.text}
+                </span>
 
-                                    </span>
-                                );
-                            }
-                        )}
+
+                                    {/* رقم الآية */}
+
+                                    <span className="ayah-marker">
+                    {ayah.numberInSurah}
+                </span>
+
+            </span>
+                            );
+                        })}
 
                     </div>
 

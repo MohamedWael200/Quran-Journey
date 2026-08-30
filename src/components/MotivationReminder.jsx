@@ -18,76 +18,85 @@ function MotivationReminder() {
         );
 
     useEffect(() => {
-        // لو المستخدم في صفحة المصحف
         if (isMushafPage) {
             setIsVisible(false);
             return;
         }
 
-        const showReminder = () => {
-            const randomIndex = Math.floor(
-                Math.random() *
-                motivationMessages.length
-            );
+        let showTimeout;
+        let hideTimeout;
 
-            setMessage(
-                motivationMessages[randomIndex]
-            );
+        const scheduleReminder = () => {
 
-            setIsVisible(true);
+            // ننتظر 15 دقيقة
+            showTimeout = setTimeout(() => {
 
-            // تختفي بعد 30 ثانية
-            setTimeout(() => {
-                setIsVisible(false);
-            }, 30000);
+                const randomIndex = Math.floor(
+                    Math.random() *
+                    motivationMessages.length
+                );
+
+                setMessage(
+                    motivationMessages[randomIndex]
+                );
+
+                setIsVisible(true);
+
+                // تفضل ظاهرة 30 ثانية
+                hideTimeout = setTimeout(() => {
+
+                    setIsVisible(false);
+
+                    // بعد ما تختفي نبدأ انتظار
+                    // 15 دقيقة للرسالة التالية
+                    scheduleReminder();
+
+                }, 30000);
+
+            }, 7 * 60 * 1000);
         };
 
-        // تظهر كل 15 دقيقة
-        const interval = setInterval(
-            showReminder,
-            15 * 60 * 1000
-
-        );
+        scheduleReminder();
 
         return () => {
-            clearInterval(interval);
+            clearTimeout(showTimeout);
+            clearTimeout(hideTimeout);
         };
+
     }, [isMushafPage]);
 
-    // لو الرسالة ظاهرة، تختفي تلقائيًا بعد 30 ثانية
-    useEffect(() => {
-        if (!isVisible) return;
-
-        const timeout = setTimeout(() => {
-            setIsVisible(false);
-        }, 30000);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [isVisible]);
 
     if (!isVisible || !message) {
         return null;
     }
 
     return (
-        <div>
-            <span>
-                {message.icon}
-            </span>
+        <div className="motivation-reminder">
 
-            <p>
-                {message.message}
-            </p>
+            <div className="motivation-icon">
+                {message.icon}
+            </div>
+
+            <div className="motivation-content">
+                <span>
+                    تذكير بسيط
+                </span>
+
+                <p>
+                    {message.message}
+                </p>
+            </div>
 
             <button
+                className="motivation-close"
                 onClick={() =>
                     setIsVisible(false)
                 }
+                aria-label="إغلاق"
             >
                 ✕
             </button>
+
         </div>
     );
 }
