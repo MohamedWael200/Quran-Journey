@@ -6,6 +6,7 @@ import Navbar from "./Navbar.jsx";
 import MotivationReminder from "../MotivationReminder.jsx";
 import Footer from "../common/Footer.jsx";
 import CharityBanner from "../common/CharityBanner.jsx";
+import GlobalAudioPlayer from "../audio/GlobalAudioPlayer.jsx";
 
 function AppLayout() {
     const { mode } = useSelector(
@@ -60,6 +61,7 @@ function AppLayout() {
 
             <Footer />
 
+            <GlobalAudioPlayer />
         </div>
     );
 }

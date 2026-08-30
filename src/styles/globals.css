@@ -9814,3 +9814,206 @@ p {
     font-size: 12px;
   }
 }
+
+
+.global-audio-player {
+  position: fixed;
+
+  bottom: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: min(950px, calc(100% - 30px));
+
+  display: grid;
+
+  grid-template-columns:
+        auto
+        auto
+        1fr
+        auto;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 15px 20px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow:
+          0 15px 45px
+          rgba(0, 0, 0, 0.2);
+
+  z-index: 999;
+
+  direction: rtl;
+}
+
+
+.global-audio-player audio {
+  display: none;
+}
+
+
+/* Info */
+
+.global-audio-info {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 180px;
+}
+
+.global-audio-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--primary-light);
+
+  border-radius: 14px;
+}
+
+.global-audio-info span {
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.global-audio-info h3 {
+  margin: 3px 0 0;
+
+  color: var(--text-primary);
+}
+
+
+/* Controls */
+
+.global-audio-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.global-audio-controls button {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+}
+
+.global-audio-controls .global-main-play {
+  width: 48px;
+  height: 48px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: var(--primary);
+
+  color: white;
+
+  font-size: 18px;
+}
+
+
+/* Progress */
+
+.global-audio-progress {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  direction: ltr;
+}
+
+.global-audio-progress input {
+  width: 100%;
+
+  accent-color: var(--primary);
+}
+
+.global-audio-progress span {
+  font-size: 12px;
+
+  color: var(--text-secondary);
+}
+
+
+/* Close */
+
+.global-audio-close {
+  width: 38px;
+  height: 38px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.global-audio-close:hover {
+  background: var(--primary-light);
+
+  color: var(--primary);
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .global-audio-player {
+    bottom: 10px;
+
+    grid-template-columns:
+            1fr auto;
+
+    gap: 12px;
+
+    padding: 14px;
+  }
+
+  .global-audio-progress {
+    grid-column:
+            1 / -1;
+  }
+
+  .global-audio-info {
+    min-width: 0;
+  }
+
+  .global-audio-controls button {
+    width: 34px;
+    height: 34px;
+  }
+}

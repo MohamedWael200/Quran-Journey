@@ -1,6 +1,5 @@
 import {
     useEffect,
-    useRef,
     useState,
 } from "react";
 
@@ -20,13 +19,8 @@ import {
 } from "../../features/reciters/recitersSlice";
 
 import {
-    saveLastListening,
-} from "../../services/lastListeningService";
-
-import {
-    addListeningTime,
-    addCompletedSurah,
-} from "../../services/dailyStatsService";
+    playSurah,
+} from "../../features/audio/audioSlice";
 
 
 function ReciterSurahsPage() {
@@ -38,37 +32,16 @@ function ReciterSurahsPage() {
 
     const dispatch = useDispatch();
 
-    const audioRef = useRef(null);
-
-    const lastTrackedTimeRef =
-        useRef(0);
-
-
-    const [
-        selectedSurah,
-        setSelectedSurah,
-    ] = useState(null);
 
     const [
         surahSearch,
         setSurahSearch,
     ] = useState("");
 
-    const [
-        isPlaying,
-        setIsPlaying,
-    ] = useState(false);
 
-    const [
-        currentTime,
-        setCurrentTime,
-    ] = useState(0);
-
-    const [
-        duration,
-        setDuration,
-    ] = useState(0);
-
+    // =========================
+    // بيانات القارئ
+    // =========================
 
     const {
         audioData,
@@ -80,17 +53,55 @@ function ReciterSurahsPage() {
 
 
     // =========================
+    // بيانات المشغل العالمي
+    // =========================
+
+    const {
+        selectedSurah,
+        isPlaying,
+    } = useSelector(
+        (state) => state.audio
+    );
+
+
+    // =========================
     // تحميل سور القارئ
     // =========================
 
     useEffect(() => {
+
         dispatch(
             fetchReciterAudio(reciterId)
         );
+
     }, [
         dispatch,
         reciterId,
     ]);
+
+
+    // =========================
+    // تشغيل سورة
+    // =========================
+
+    const handlePlaySurah = (
+        surah,
+        startTime = 0
+    ) => {
+
+        if (!audioData) {
+            return;
+        }
+
+        dispatch(
+            playSurah({
+                surah,
+                audioData,
+                startTime,
+            })
+        );
+
+    };
 
 
     // =========================
@@ -113,12 +124,14 @@ function ReciterSurahsPage() {
             return;
         }
 
+
         const savedSurah =
             audioData.audio_urls.find(
                 (surah) =>
                     surah.surah_id ===
                     lastListening.surah.surah_id
             );
+
 
         if (savedSurah) {
 
@@ -135,204 +148,6 @@ function ReciterSurahsPage() {
 
 
     // =========================
-    // تشغيل سورة
-    // =========================
-
-    const handlePlaySurah = (
-        surah,
-        startTime = 0
-    ) => {
-
-        setCurrentTime(startTime);
-
-        setDuration(0);
-
-        lastTrackedTimeRef.current =
-            startTime;
-
-        setSelectedSurah({
-            ...surah,
-            startTime,
-        });
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-
-    };
-
-
-    // =========================
-    // تحميل وتشغيل الصوت
-    // =========================
-
-    useEffect(() => {
-
-        if (
-            !selectedSurah ||
-            !audioRef.current
-        ) {
-            return;
-        }
-
-        const audioEl =
-            audioRef.current;
-
-        const startTime =
-            selectedSurah.startTime || 0;
-
-        const handleLoadedMetadata = () => {
-
-            audioEl.currentTime =
-                startTime;
-
-            audioEl.play()
-                .catch(() => {});
-
-        };
-
-        audioEl.addEventListener(
-            "loadedmetadata",
-            handleLoadedMetadata
-        );
-
-        audioEl.load();
-
-        return () => {
-
-            audioEl.removeEventListener(
-                "loadedmetadata",
-                handleLoadedMetadata
-            );
-
-        };
-
-    }, [
-        selectedSurah,
-    ]);
-
-
-    // =========================
-    // Play / Pause
-    // =========================
-
-    const handleTogglePlay = () => {
-
-        if (!audioRef.current) return;
-
-        if (
-            audioRef.current.paused
-        ) {
-
-            audioRef.current
-                .play()
-                .catch(() => {});
-
-        } else {
-
-            audioRef.current.pause();
-
-        }
-
-    };
-
-
-    // =========================
-    // ترتيب السورة
-    // =========================
-
-    const currentSurahIndex =
-        audioData?.audio_urls.findIndex(
-            (surah) =>
-                surah.surah_id ===
-                selectedSurah?.surah_id
-        ) ?? -1;
-
-
-    // =========================
-    // التالي
-    // =========================
-
-    const handleNextSurah = () => {
-
-        if (
-            !audioData ||
-            currentSurahIndex === -1
-        ) {
-            return;
-        }
-
-        const nextSurah =
-            audioData.audio_urls[
-            currentSurahIndex + 1
-                ];
-
-        if (nextSurah) {
-            handlePlaySurah(nextSurah);
-        }
-
-    };
-
-
-    // =========================
-    // السابق
-    // =========================
-
-    const handlePreviousSurah = () => {
-
-        if (
-            !audioData ||
-            currentSurahIndex <= 0
-        ) {
-            return;
-        }
-
-        const previousSurah =
-            audioData.audio_urls[
-            currentSurahIndex - 1
-                ];
-
-        if (previousSurah) {
-            handlePlaySurah(previousSurah);
-        }
-
-    };
-
-
-    // =========================
-    // انتهاء السورة
-    // =========================
-
-    const handleAudioEnded = () => {
-
-        if (selectedSurah) {
-
-            addCompletedSurah(
-                selectedSurah.surah_id
-            );
-
-        }
-
-        const nextSurah =
-            audioData?.audio_urls[
-            currentSurahIndex + 1
-                ];
-
-        if (nextSurah) {
-
-            handlePlaySurah(nextSurah);
-
-        } else {
-
-            setIsPlaying(false);
-
-        }
-
-    };
-
-
-    // =========================
     // بحث السور
     // =========================
 
@@ -346,42 +161,13 @@ function ReciterSurahsPage() {
 
 
     // =========================
-    // تنسيق الوقت
+    // Loading
     // =========================
-
-    const formatTime = (time) => {
-
-        if (
-            !time ||
-            Number.isNaN(time)
-        ) {
-            return "00:00";
-        }
-
-        const minutes =
-            Math.floor(time / 60);
-
-        const seconds =
-            Math.floor(time % 60);
-
-        return `${String(
-            minutes
-        ).padStart(
-            2,
-            "0"
-        )}:${String(
-            seconds
-        ).padStart(
-            2,
-            "0"
-        )}`;
-
-    };
-
 
     if (loading && !audioData) {
 
         return (
+
             <div className="audio-loading">
 
                 <div className="audio-loading-icon">
@@ -393,17 +179,29 @@ function ReciterSurahsPage() {
                 </h2>
 
             </div>
+
         );
 
     }
 
 
+    // =========================
+    // Error
+    // =========================
+
     if (error) {
-        return <h2>{error}</h2>;
+
+        return (
+            <h2>
+                {error}
+            </h2>
+        );
+
     }
 
 
     return (
+
         <div className="reciter-surahs-page">
 
 
@@ -420,11 +218,13 @@ function ReciterSurahsPage() {
                     → العودة للقراء
                 </button>
 
+
                 <div className="reciter-page-title">
 
                     <div className="reciter-page-avatar">
                         🎙️
                     </div>
+
 
                     <div>
 
@@ -433,9 +233,7 @@ function ReciterSurahsPage() {
                         </span>
 
                         <h1>
-                            {
-                                audioData?.reciter_name
-                            }
+                            {audioData?.reciter_name}
                         </h1>
 
                         <p>
@@ -454,7 +252,9 @@ function ReciterSurahsPage() {
 
             <div className="reciter-search">
 
-                <span>🔍</span>
+                <span>
+                    🔍
+                </span>
 
                 <input
                     type="text"
@@ -476,7 +276,9 @@ function ReciterSurahsPage() {
 
                 <div className="empty-state">
 
-                    <div>📖</div>
+                    <div>
+                        📖
+                    </div>
 
                     <h3>
                         لا توجد سورة
@@ -495,7 +297,9 @@ function ReciterSurahsPage() {
                                 selectedSurah?.surah_id ===
                                 surah.surah_id;
 
+
                             return (
+
                                 <div
                                     key={
                                         surah.surah_id
@@ -528,13 +332,16 @@ function ReciterSurahsPage() {
                                             }
                                         </h3>
 
+
                                         <span>
 
                                             {
                                                 isCurrent &&
                                                 isPlaying
                                                     ? "يتم التشغيل الآن"
-                                                    : "اضغط للاستماع"
+                                                    : isCurrent
+                                                        ? "متوقفة مؤقتًا"
+                                                        : "اضغط للاستماع"
                                             }
 
                                         </span>
@@ -544,23 +351,11 @@ function ReciterSurahsPage() {
 
                                     <button
                                         className="play-surah-btn"
-                                        onClick={() => {
-
-                                            if (
-                                                isCurrent
-                                            ) {
-
-                                                handleTogglePlay();
-
-                                            } else {
-
-                                                handlePlaySurah(
-                                                    surah
-                                                );
-
-                                            }
-
-                                        }}
+                                        onClick={() =>
+                                            handlePlaySurah(
+                                                surah
+                                            )
+                                        }
                                     >
 
                                         {
@@ -573,6 +368,7 @@ function ReciterSurahsPage() {
                                     </button>
 
                                 </div>
+
                             );
 
                         }
@@ -582,212 +378,10 @@ function ReciterSurahsPage() {
 
             )}
 
-
-            {/* Player ثابت */}
-
-            {selectedSurah && (
-
-                <div className="audio-player">
-
-                    <div className="audio-player-top">
-
-                        <div className="now-playing-icon">
-                            🎵
-                        </div>
-
-                        <div>
-
-                            <span>
-                                الآن يتم تشغيل
-                            </span>
-
-                            <h3>
-                                {
-                                    selectedSurah
-                                        .surah_name_ar
-                                }
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <audio
-                        ref={audioRef}
-                        src={
-                            selectedSurah.audio_url
-                        }
-                        onEnded={
-                            handleAudioEnded
-                        }
-                        onPlay={() =>
-                            setIsPlaying(true)
-                        }
-                        onPause={() =>
-                            setIsPlaying(false)
-                        }
-                        onLoadedMetadata={(e) =>
-                            setDuration(
-                                e.target.duration
-                            )
-                        }
-                        onTimeUpdate={(e) => {
-
-                            const time =
-                                e.target.currentTime;
-
-                            setCurrentTime(time);
-
-                            const listenedSeconds =
-                                time -
-                                lastTrackedTimeRef.current;
-
-                            if (
-                                listenedSeconds > 0
-                            ) {
-
-                                addListeningTime(
-                                    listenedSeconds
-                                );
-
-                                lastTrackedTimeRef.current =
-                                    time;
-
-                            }
-
-
-                            if (
-                                audioData &&
-                                selectedSurah
-                            ) {
-
-                                saveLastListening({
-
-                                    reciterId:
-                                    audioData.reciter_id,
-
-                                    reciterName:
-                                    audioData.reciter_name,
-
-                                    surah:
-                                    selectedSurah,
-
-                                    currentTime:
-                                    time,
-
-                                });
-
-                            }
-
-                        }}
-                    />
-
-
-                    {/* Progress */}
-
-                    <div className="audio-progress">
-
-                        <span>
-                            {
-                                formatTime(
-                                    currentTime
-                                )
-                            }
-                        </span>
-
-                        <input
-                            type="range"
-                            min="0"
-                            max={duration || 0}
-                            value={currentTime}
-                            step="1"
-                            onChange={(e) => {
-
-                                const newTime =
-                                    Number(
-                                        e.target.value
-                                    );
-
-                                if (
-                                    audioRef.current
-                                ) {
-
-                                    audioRef.current.currentTime =
-                                        newTime;
-
-                                }
-
-                                setCurrentTime(
-                                    newTime
-                                );
-
-                            }}
-                        />
-
-                        <span>
-                            {
-                                formatTime(
-                                    duration
-                                )
-                            }
-                        </span>
-
-                    </div>
-
-
-                    {/* Controls */}
-
-                    <div className="audio-controls">
-
-                        <button
-                            onClick={
-                                handlePreviousSurah
-                            }
-                            disabled={
-                                currentSurahIndex <= 0
-                            }
-                        >
-                            السابق ⏮
-                        </button>
-
-
-                        <button
-                            className="main-play-btn"
-                            onClick={
-                                handleTogglePlay
-                            }
-                        >
-                            {
-                                isPlaying
-                                    ? "⏸"
-                                    : "▶"
-                            }
-                        </button>
-
-
-                        <button
-                            onClick={
-                                handleNextSurah
-                            }
-                            disabled={
-                                currentSurahIndex ===
-                                audioData
-                                    .audio_urls
-                                    .length - 1
-                            }
-                        >
-                            التالي ⏭
-                        </button>
-
-                    </div>
-
-                </div>
-
-            )}
-
         </div>
+
     );
+
 }
 
 export default ReciterSurahsPage;

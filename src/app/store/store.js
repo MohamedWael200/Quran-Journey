@@ -6,6 +6,7 @@ import duasReducer from "../../features/duas/duasSlice";
 import hadithReducer from "../../features/hadith/hadithSlice";
 import prayerReducer from "../../features/prayer/prayerSlice";
 import recitersReducer from "../../features/reciters/recitersSlice";
+import audioReducer from "../../features/audio/audioSlice.js";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     hadith: hadithReducer,
     prayer: prayerReducer,
     reciters: recitersReducer,
+    audio: audioReducer,
   },
 });
 
