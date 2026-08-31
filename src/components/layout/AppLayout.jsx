@@ -23,7 +23,7 @@ function AppLayout() {
 
                     <div className="app-logo">
                         <span className="logo-icon">
-                            ☪
+                            <img src="../../../public/logo.png" />
                         </span>
 
                         <div>
