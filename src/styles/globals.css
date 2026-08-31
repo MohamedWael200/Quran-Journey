@@ -4345,6 +4345,542 @@ p {
 }
 
 /* =========================================
+   Target Button
+========================================= */
+/* =========================================
+   Tasbeeh Target Button
+========================================= */
+
+.tasbeeh-target-btn {
+  min-width: 180px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+
+  padding: 11px 18px;
+
+  background: var(--surface);
+
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+          transform var(--transition),
+          background var(--transition),
+          border-color var(--transition),
+          box-shadow var(--transition);
+}
+
+.tasbeeh-target-btn:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--primary);
+
+  background: var(--primary-light);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.tasbeeh-target-btn:active {
+  transform: scale(0.97);
+}
+
+.tasbeeh-target-btn.has-target {
+  border-color: var(--primary);
+
+  color: var(--primary);
+
+  background: var(--primary-light);
+}
+
+.tasbeeh-target-icon {
+  font-size: 18px;
+}
+
+.tasbeeh-target-arrow {
+  font-size: 13px;
+
+  opacity: 0.6;
+}
+
+
+/* =========================================
+   Progress
+========================================= */
+
+.tasbeeh-progress {
+  width: min(350px, 90%);
+
+  height: 8px;
+
+  margin-bottom: 20px;
+
+  overflow: hidden;
+
+  background: var(--background);
+
+  border-radius: 20px;
+}
+
+.tasbeeh-progress-bar {
+  height: 100%;
+
+  background: var(--primary);
+
+  border-radius: inherit;
+
+  transition: width 0.3s ease;
+}
+
+
+/* =========================================
+   Completed
+========================================= */
+
+.tasbeeh-counter-card.completed {
+  border-color: var(--primary);
+}
+
+.tasbeeh-counter-card.completed
+.tasbeeh-count {
+  background: var(--primary-light);
+
+  border-color: var(--primary);
+}
+
+
+/* =========================================
+   Target Modal
+========================================= */
+
+.tasbeeh-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  backdrop-filter: blur(5px);
+
+  animation: tasbeehModalOverlay 0.2s ease;
+}
+
+
+.tasbeeh-target-modal {
+  width: min(480px, 100%);
+
+  padding: 25px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+
+  direction: rtl;
+
+  animation: tasbeehModalOpen 0.25s ease;
+}
+
+
+/* =========================================
+   Modal Header
+========================================= */
+
+.tasbeeh-modal-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+}
+
+.tasbeeh-modal-header h2 {
+  margin: 6px 0 0;
+
+  color: var(--text-primary);
+
+  font-size: 22px;
+}
+
+
+.tasbeeh-modal-close {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  color: var(--text-secondary);
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+          background var(--transition),
+          color var(--transition),
+          border-color var(--transition);
+}
+
+.tasbeeh-modal-close:hover {
+  background: var(--primary-light);
+
+  color: var(--primary);
+
+  border-color: var(--primary);
+}
+
+
+/* =========================================
+   Current Dhikr
+========================================= */
+
+.tasbeeh-modal-dhikr {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px;
+
+  margin-bottom: 20px;
+
+  background: var(--primary-light);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+}
+
+.tasbeeh-modal-dhikr > span {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: var(--surface);
+
+  border-radius: 13px;
+
+  font-size: 22px;
+}
+
+.tasbeeh-modal-dhikr div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.tasbeeh-modal-dhikr small {
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.tasbeeh-modal-dhikr strong {
+  color: var(--text-primary);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   Target Field
+========================================= */
+
+.tasbeeh-target-field {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.tasbeeh-target-field label {
+  color: var(--text-primary);
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.tasbeeh-target-field input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 14px 15px;
+
+  padding-left: 75px;
+
+  background: var(--background);
+
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  font-size: 16px;
+
+  transition:
+          border-color var(--transition),
+          box-shadow var(--transition);
+}
+
+.tasbeeh-target-field input:focus {
+  border-color: var(--primary);
+
+  box-shadow:
+          0 0 0 3px
+          var(--primary-light);
+}
+
+.tasbeeh-target-field > span {
+  position: absolute;
+
+  left: 14px;
+
+  bottom: 14px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+
+  pointer-events: none;
+}
+
+
+/* Remove number arrows */
+
+.tasbeeh-target-field input::-webkit-outer-spin-button,
+.tasbeeh-target-field input::-webkit-inner-spin-button {
+  margin: 0;
+
+  -webkit-appearance: none;
+}
+
+.tasbeeh-target-field input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+/* =========================================
+   Error
+========================================= */
+
+.tasbeeh-target-error {
+  margin: 8px 0 0;
+
+  color: #dc3545;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   Hint
+========================================= */
+
+.tasbeeh-target-hint {
+  margin: 10px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   Modal Actions
+========================================= */
+
+.tasbeeh-modal-actions {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+.tasbeeh-modal-actions button {
+  flex: 1;
+
+  min-height: 46px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          background var(--transition);
+}
+
+.tasbeeh-modal-actions button:active {
+  transform: scale(0.97);
+}
+
+
+/* Cancel */
+
+.tasbeeh-modal-cancel {
+  background: var(--surface);
+
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+}
+
+.tasbeeh-modal-cancel:hover {
+  border-color: var(--primary);
+
+  background: var(--primary-light);
+}
+
+
+/* Save */
+
+.tasbeeh-modal-save {
+  background: var(--primary);
+
+  color: white;
+
+  border: none;
+}
+
+.tasbeeh-modal-save:hover {
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================
+   Animations
+========================================= */
+
+@keyframes tasbeehModalOverlay {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tasbeehModalOpen {
+  from {
+    opacity: 0;
+
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 600px) {
+
+  .tasbeeh-target-btn {
+    width: 100%;
+
+    max-width: 260px;
+  }
+
+  .tasbeeh-target-modal {
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+  .tasbeeh-modal-header h2 {
+    font-size: 19px;
+  }
+
+  .tasbeeh-modal-actions {
+    flex-direction: column;
+  }
+
+  .tasbeeh-modal-actions button {
+    width: 100%;
+  }
+
+}
+/* =========================================
    Duas Page
 ========================================= */
 
